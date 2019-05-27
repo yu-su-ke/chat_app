@@ -2,88 +2,109 @@
   <div id="app">
     <header class="header">
       <h1>Chat</h1>
-      <!-- ログイン時にはフォームとログアウトボタンを表示 -->
-      <div v-if="user.uid" key="login">
-        [{{ user.displayName }}]
-        <button type="button" @click="doLogout">ログアウト</button>
-      </div>
-      <!-- 未ログイン時にはログインボタンを表示 -->
-      <div v-else key="logout">
-        <button type="button" @click="doLogin">ログイン</button>
-      </div>
+<!--      &lt;!&ndash;When user login, represent form and logout button.&ndash;&gt;-->
+<!--      <div v-if="user.uid" key="login">-->
+<!--&lt;!&ndash;        [{{ user .displayName}}]&ndash;&gt;-->
+<!--        <button type="button" @click="doLogout">Logout</button>-->
+<!--      </div>-->
+<!--      &lt;!&ndash;When user isn't login, represent login button.&ndash;&gt;-->
+<!--      <div v-else key="logout">-->
+<!--        <button type="button" @click="doLogin">Login</button>-->
+<!--      </div>-->
     </header>
 
-    <!--　Firebase から取得したリストを描画（トランジション付き）　-->
-    <transition-group name="chat" tag="div" class="list content">
-      <section v-for="{ key, name, image, message } in chat" :key="key" class="item">
-        <div class="item-image"><img :src="image" width="40" height="40"></div>
-        <div class="item-detail">
-          <div class="item-name">{{ name }}</div>
-          <div class="item-message">
-            <nl2br tag="div" :text="message"/>
+    <p class="infobox">
+      <transition-group name="chat" tag="div" class="list content">
+        <section v-for="{ key, name, image, message } in chat" :key="key" class="item">
+          <div class="item-image"><img :src="image" width="40" height="40"></div>
+          <div class="item-detail">
+            <div class="item-name">{{ name }}</div>
+            <div class="item-message">
+              <nl2br tag="div" :text="message"/>
+            </div>
           </div>
-        </div>
-      </section>
-    </transition-group>
+        </section>
+      </transition-group>
+    </p>
 
-    <!-- 入力フォーム -->
+    <!--Left section-->
+<!--    <section v-for="{ key, name, image, message } in chat" :key="key" class="item-left">-->
+<!--      <div class="item-image-left"><img :src="image" width="60" height="60"></div>-->
+<!--      <div class="item-name-left">{{ name }}</div>-->
+<!--    </section>-->
+
+    <!--Right section-->
+    <div class="item-name-right">
+      {{ user .displayName }}
+      <div class="item-image-right"><img :src="user.photoURL" width="160" height="160"></div>
+    </div>
+    <!--When user login, represent form and logout button.-->
+    <div v-if="user.uid" key="login" class="item-button-right">
+      <a class="button is-primary" @click="doLogout">Logout</a>
+    </div>
+    <!--When user isn't login, represent login button.-->
+    <div v-else key="logout" class="item-button-right">
+      <a class="button is-success" @click="doLogin">Login</a>
+    </div>
+
+    <!--input field-->
     <form action="" @submit.prevent="doSend" class="form">
-      <textarea
-        v-model="input"
-        :disabled="!user.uid"
-        @keydown.enter.exact.prevent="doSend"></textarea>
+      <textarea v-model="input" :disabled="!user.uid" @keydown.enter.exact.prevent="doSend"></textarea>
       <button type="submit" :disabled="!user.uid" class="send-button">Send</button>
     </form>
   </div>
 </template>
 
 <script>
-  // firebase モジュール
+  // firebase module
   import firebase from 'firebase'
-  // 改行を <br> タグに変換するモジュール
   import Nl2br from 'vue-nl2br'
   export default {
-    components: { Nl2br },
-    data() {
-      return {
-        user: {},  // ユーザー情報
-        chat: [],  // 取得したメッセージを入れる配列
-        input: ''  // 入力したメッセージ
+    components: {Nl2br},
+    data(){
+      return{
+        user: {},
+        chat: [],
+        input: ''
       }
     },
     created() {
       firebase.auth().onAuthStateChanged(user => {
         this.user = user ? user : {}
         const ref_message = firebase.database().ref('message')
-        if (user) {
+        if(user){
           this.chat = []
-          // message に変更があったときのハンドラを登録
+          // Register handler when message is changed
           ref_message.limitToLast(10).on('child_added', this.childAdded)
-        } else {
-          // message に変更があったときのハンドラを解除
+        }else{
+          // Release the handler when there is a change in message
           ref_message.limitToLast(10).off('child_added', this.childAdded)
         }
       })
     },
     methods: {
-      // ログイン処理
-      doLogin() {
+      // Login process
+      doLogin(){
         const provider = new firebase.auth.TwitterAuthProvider()
         firebase.auth().signInWithPopup(provider)
       },
-      // ログアウト処理
-      doLogout() {
+      // Logout process
+      doLogout(){
         firebase.auth().signOut()
       },
-      // スクロール位置を一番下に移動
-      scrollBottom() {
-        this.$nextTick(() => {
+      // doLogin () {
+      //   const provider = new firebase.auth.GoogleAuthProvider()
+      //   firebase.auth().signInWithPopup(provider)
+      // },
+      // doLogout () {
+      //   firebase.auth().signOut()
+      // },
+      scrollBottom(){
+        this.$nextTick(() =>{
           window.scrollTo(0, document.body.clientHeight)
         })
       },
-      // 受け取ったメッセージをchatに追加
-      // データベースに新しい要素が追加されると随時呼び出される
-      childAdded(snap) {
+      childAdded(snap){
         const message = snap.val()
         this.chat.push({
           key: snap.key,
@@ -93,15 +114,16 @@
         })
         this.scrollBottom()
       },
-      doSend() {
-        if (this.user.uid && this.input.length) {
-          // firebase にメッセージを追加
+      doSend(){
+        if(this.user.uid && this.input.length){
+          // Add a message to firebase
           firebase.database().ref('message').push({
             message: this.input,
             name: this.user.displayName,
             image: this.user.photoURL
-          }, () => {
-            this.input = '' // フォームを空にする
+          }, () =>{
+            // Clear form
+            this.input =''
           })
         }
       }
@@ -119,6 +141,10 @@
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+h1 {
+  font-size: 40px;
 }
 
 * {
@@ -171,6 +197,7 @@
 }
 .item-name {
   font-size: 75%;
+  font-family: 'Carter One', cursive;
 }
 .item-message {
   position: relative;
@@ -179,6 +206,7 @@
   background: #deefe8;
   border-radius: 4px;
   line-height: 1.2em;
+  font-family: 'Paytone One', sans-serif;
 }
 .item-message::before {
   position: absolute;
@@ -189,6 +217,41 @@
   border: 4px solid transparent;
   border-right: 12px solid #deefe8;
 }
+
+
+.item-left {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 0.8em;
+  margin-left: 400px;
+}
+.item-image-left img {
+  border-radius: 40px;
+  vertical-align: top;
+  margin-bottom: 0.5em;
+  margin-left: 150px;
+  position: relative; top: -350px; left:0px;
+}
+.item-name-left {
+  position: relative; top: -375px; left:20px;
+}
+
+
+.item-name-right {
+  position: relative; top: -750px; left:700px;
+  font-size: 40px;
+}
+.item-button-right {
+  position: relative; top: -550px; left:700px;
+}
+.item-image-right img {
+  border-radius: 140px;
+  vertical-align: top;
+  position: relative; top: 40px; right:0px;
+}
+
+
 .send-button {
   height: 4em;
 }
@@ -201,5 +264,9 @@
   transform: translateX(-1em);
 }
 
+.infobox {
+  height: 800px;     /* 高さを制限(※) */
+  overflow: scroll;  /* スクロールバーを表示(※) */
+}
 
 </style>
