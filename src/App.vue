@@ -2,15 +2,6 @@
   <div id="app">
     <header class="header">
       <h1>Chat</h1>
-<!--      &lt;!&ndash;When user login, represent form and logout button.&ndash;&gt;-->
-<!--      <div v-if="user.uid" key="login">-->
-<!--&lt;!&ndash;        [{{ user .displayName}}]&ndash;&gt;-->
-<!--        <button type="button" @click="doLogout">Logout</button>-->
-<!--      </div>-->
-<!--      &lt;!&ndash;When user isn't login, represent login button.&ndash;&gt;-->
-<!--      <div v-else key="logout">-->
-<!--        <button type="button" @click="doLogin">Login</button>-->
-<!--      </div>-->
     </header>
 
     <p class="infobox">
@@ -239,11 +230,11 @@ h1 {
 
 
 .item-name-right {
-  position: relative; top: -750px; left:700px;
+  position: relative; top: -750px; left:550px;
   font-size: 40px;
 }
 .item-button-right {
-  position: relative; top: -550px; left:700px;
+  position: relative; top: -550px; left:550px;
 }
 .item-image-right img {
   border-radius: 140px;

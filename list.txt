@@ -1,0 +1,4 @@
+npm install bulma
+npm i sass-loader node-sass --save-dev
+npm install vue-nl2br
+npm install firebase
