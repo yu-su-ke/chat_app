@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header class="header">
-      <h1>Chat</h1>
+      <h1>MyChat</h1>
     </header>
 
     <p class="infobox">
@@ -40,7 +40,10 @@
 
     <!--input field-->
     <form action="" @submit.prevent="doSend" class="form">
-      <textarea v-model="input" :disabled="!user.uid" @keydown.enter.exact.prevent="doSend"></textarea>
+<!--      <textarea v-model="input" :disabled="!user.uid" @keydown.enter.exact.prevent="doSend"></textarea>-->
+      <div class="field">
+        <textarea class="textarea is-large" v-model="input" :disabled="!user.uid" @keydown.enter.exact.prevent="doSend" placeholder=""></textarea>
+      </div>
       <button type="submit" :disabled="!user.uid" class="send-button">Send</button>
     </form>
   </div>
@@ -131,7 +134,8 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 30px;
+  height: 1000px;
 }
 
 h1 {
@@ -143,7 +147,7 @@ h1 {
   box-sizing: border-box;
 }
 .header {
-  background: #3ab383;
+  background: #87cefa;
   margin-bottom: 1em;
   padding: 0.4em 0.8em;
   color: #fff;
@@ -240,6 +244,13 @@ h1 {
   border-radius: 140px;
   vertical-align: top;
   position: relative; top: 40px; right:0px;
+}
+
+.field{
+
+}
+.form{
+  position: relative; top: -200px; right:0px;
 }
 
 
