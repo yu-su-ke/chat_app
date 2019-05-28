@@ -40,11 +40,12 @@
 
     <!--input field-->
     <form action="" @submit.prevent="doSend" class="form">
-<!--      <textarea v-model="input" :disabled="!user.uid" @keydown.enter.exact.prevent="doSend"></textarea>-->
       <div class="field">
         <textarea class="textarea is-large" v-model="input" :disabled="!user.uid" @keydown.enter.exact.prevent="doSend" placeholder=""></textarea>
       </div>
-      <button type="submit" :disabled="!user.uid" class="send-button">Send</button>
+      <div class="button-field">
+        <button type="submit" :disabled="!user.uid" class="button is-info">Send</button>
+      </div>
     </form>
   </div>
 </template>
@@ -135,11 +136,12 @@
   text-align: center;
   color: #2c3e50;
   margin-top: 30px;
-  height: 1000px;
+  height: 700px;
 }
 
 h1 {
   font-size: 40px;
+  font-family: 'Paytone One', sans-serif;
 }
 
 * {
@@ -247,12 +249,13 @@ h1 {
 }
 
 .field{
-
+  width: 1000px;
+  height: 200px;
 }
-.form{
-  position: relative; top: -200px; right:0px;
+.button-field{
+  height: 130px;
+  width: 100px;
 }
-
 
 .send-button {
   height: 4em;
