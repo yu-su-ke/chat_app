@@ -31,11 +31,23 @@
     </div>
     <!--When user login, represent form and logout button.-->
     <div v-if="user.uid" key="login" class="item-button-right">
-      <a class="button is-primary" @click="doLogout">Logout</a>
+      <a class="button is-link is-medium" @click="doLogout">Logout</a>
     </div>
     <!--When user isn't login, represent login button.-->
     <div v-else key="logout" class="item-button-right">
-      <a class="button is-success" @click="doLogin">Login</a>
+      <p id="text">Choose Login Platform</p>
+      <div class="select is-medium">
+        <select v-model="selectItem">
+          <option value="twitter">Twitter</option>
+          <option value="google">Google</option>
+        </select>
+      </div>
+      <div v-if="selectItem === 'twitter'">
+        <a class="button is-link is-medium" @click="doLogin_twitter">Login</a>
+      </div>
+      <div v-if="selectItem === 'google'">
+        <a class="button is-link is-medium" @click="doLogin_google">Login</a>
+      </div>
     </div>
 
     <!--input field-->
@@ -44,7 +56,7 @@
         <textarea class="textarea is-large" v-model="input" :disabled="!user.uid" @keydown.enter.exact.prevent="doSend" placeholder=""></textarea>
       </div>
       <div class="button-field">
-        <button type="submit" :disabled="!user.uid" class="button is-info">Send</button>
+        <button type="submit" :disabled="!user.uid" class="button is-info is-medium">Send</button>
       </div>
     </form>
   </div>
@@ -60,7 +72,8 @@
       return{
         user: {},
         chat: [],
-        input: ''
+        input: '',
+        selectItem: null
       }
     },
     created() {
@@ -79,21 +92,18 @@
     },
     methods: {
       // Login process
-      doLogin(){
+      doLogin_twitter(){
         const provider = new firebase.auth.TwitterAuthProvider()
         firebase.auth().signInWithPopup(provider)
       },
+      doLogin_google () {
+        const provider = new firebase.auth.GoogleAuthProvider()
+        firebase.auth().signInWithPopup(provider)
+      },
       // Logout process
-      doLogout(){
+      doLogout () {
         firebase.auth().signOut()
       },
-      // doLogin () {
-      //   const provider = new firebase.auth.GoogleAuthProvider()
-      //   firebase.auth().signInWithPopup(provider)
-      // },
-      // doLogout () {
-      //   firebase.auth().signOut()
-      // },
       scrollBottom(){
         this.$nextTick(() =>{
           window.scrollTo(0, document.body.clientHeight)
@@ -136,12 +146,22 @@
   text-align: center;
   color: #2c3e50;
   margin-top: 30px;
-  height: 700px;
+  height: 930px;
+  overflow: hidden;
 }
 
 h1 {
   font-size: 40px;
   font-family: 'Paytone One', sans-serif;
+}
+
+p {
+  font-size: 25px;
+  font-family: 'Paytone One', sans-serif;
+}
+
+#text{
+  position: relative; top: -40px;;
 }
 
 * {
@@ -168,6 +188,7 @@ h1 {
   height: 80px;
   width: 100%;
   background: #f5f5f5;
+  position: relative; top: -80px;
 }
 .form textarea {
   border: 1px solid #ccc;
@@ -228,7 +249,7 @@ h1 {
   vertical-align: top;
   margin-bottom: 0.5em;
   margin-left: 150px;
-  position: relative; top: -350px; left:0px;
+  position: relative; top: -350px;
 }
 .item-name-left {
   position: relative; top: -375px; left:20px;
@@ -236,24 +257,24 @@ h1 {
 
 
 .item-name-right {
-  position: relative; top: -750px; left:550px;
+  position: relative; top: -650px; left:550px;
   font-size: 40px;
 }
 .item-button-right {
-  position: relative; top: -550px; left:550px;
+  position: relative; top: -450px; left:550px;
 }
 .item-image-right img {
   border-radius: 140px;
   vertical-align: top;
-  position: relative; top: 40px; right:0px;
+  position: relative; top: 40px;
 }
 
 .field{
   width: 1000px;
-  height: 200px;
+  height: 400px;
 }
 .button-field{
-  height: 130px;
+  height: 330px;
   width: 100px;
 }
 
@@ -269,9 +290,14 @@ h1 {
   transform: translateX(-1em);
 }
 
+.select{
+  position: relative; top: -20px;
+}
+
 .infobox {
-  height: 800px;     /* 高さを制限(※) */
+  height: 700px;     /* 高さを制限(※) */
   overflow: scroll;  /* スクロールバーを表示(※) */
+  overflow-x: hidden;
 }
 
 </style>
