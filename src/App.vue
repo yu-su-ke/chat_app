@@ -19,10 +19,9 @@
     </p>
 
     <!--Left section-->
-<!--    <section v-for="{ key, name, image, message } in chat" :key="key" class="item-left">-->
-<!--      <div class="item-image-left"><img :src="image" width="60" height="60"></div>-->
-<!--      <div class="item-name-left">{{ name }}</div>-->
-<!--    </section>-->
+<!--    <div class="item-name-left" v-if="currentUser.displayName !== null">-->
+<!--      {{currentUser.displayName}}-->
+<!--    </div>-->
 
     <!--Right section-->
     <div class="item-name-right">
@@ -73,7 +72,8 @@
         user: {},
         chat: [],
         input: '',
-        selectItem: null
+        selectItem: null,
+        currentUser: firebase.auth().currentUser
       }
     },
     created() {
@@ -252,7 +252,8 @@ p {
   position: relative; top: -350px;
 }
 .item-name-left {
-  position: relative; top: -375px; left:20px;
+  position: relative; top: -700px; left:-800px;
+  font-size: 40px;
 }
 
 
