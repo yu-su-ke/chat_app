@@ -20,7 +20,7 @@
 
     <!--Left section-->
 <!--    <div class="item-name-left" v-if="currentUser.displayName !== null">-->
-<!--      {{currentUser.displayName}}-->
+<!--    {{currentUser.displayName}}-->
 <!--    </div>-->
 
     <!--Right section-->
