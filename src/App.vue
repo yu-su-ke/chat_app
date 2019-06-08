@@ -7,11 +7,23 @@
     <p class="infobox">
       <transition-group name="chat" tag="div" class="list content">
         <section v-for="{ key, name, image, message } in chat" :key="key" class="item">
-          <div class="item-image"><img :src="image" width="40" height="40"></div>
-          <div class="item-detail">
-            <div class="item-name">{{ name }}</div>
-            <div class="item-message">
-              <nl2br tag="div" :text="message"/>
+          <div v-if="name == user.displayName">
+            <div class="item-image-my"><img :src="image" width="40" height="40"></div>
+            <div class="item-detail-my">
+              <div class="item-name-my">{{ name }}</div>
+              <div class="item-message-my">
+                <nl2br tag="div" :text="message"/>
+              </div>
+            </div>
+          </div>
+
+          <div v-else>
+            <div class="item-image"><img :src="image" width="40" height="40"></div>
+            <div class="item-detail">
+              <div class="item-name">{{ name }}</div>
+              <div class="item-message">
+                <nl2br tag="div" :text="message"/>
+              </div>
             </div>
           </div>
         </section>
@@ -19,9 +31,10 @@
     </p>
 
     <!--Left section-->
-    <div class="item-name-left" v-if="currentUser !== null">
-      {{currentUser.displayName}}
-    </div>
+<!--    <div class="item-name-left" v-if="currentUser !== null">-->
+<!--      {{currentUser.displayName}}-->
+<!--      <div class="item-image-right"><img :src="currentUser.photoURL" width="160" height="160"></div>-->
+<!--    </div>-->
 
     <!--Right section-->
     <div class="item-name-right">
@@ -106,7 +119,9 @@
       },
       scrollBottom(){
         this.$nextTick(() =>{
-          window.scrollTo(0, document.body.clientHeight)
+          //window.scrollTo(0, document.body.clientHeight)
+          window.scrollTo(0, document.getElementsByClassName('list content').scrollHeight)
+
         })
       },
       childAdded(snap){
@@ -175,7 +190,8 @@ p {
 }
 /*message box*/
 .content {
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0 10px;
   max-width: 1000px;
   height: 700px;
@@ -202,12 +218,20 @@ p {
 }
 .list {
   margin-bottom: 100px;
+  overflow: scroll;  /* スクロールバーを表示(※) */
+  overflow-x: hidden;
 }
+
 .item {
   position: relative;
   display: flex;
   align-items: flex-end;
-  margin-bottom: 0.8em;
+  margin-bottom: 1.8em;
+}
+
+/*other user list*/
+.item-image{
+  position: absolute; left: 10px; top: 50px;
 }
 .item-image img {
   border-radius: 20px;
@@ -219,25 +243,61 @@ p {
 .item-name {
   font-size: 75%;
   font-family: 'Carter One', cursive;
+  position: absolute; left: 10%;
 }
 .item-message {
-  position: relative;
   display: inline-block;
   padding: 0.8em;
   background: #deefe8;
   border-radius: 4px;
   line-height: 1.2em;
   font-family: 'Paytone One', sans-serif;
+  position: relative; top: 30px;left: 40px;
 }
 .item-message::before {
   position: absolute;
   content: " ";
   display: block;
-  left: -16px;
+  left: -20px;
   bottom: 12px;
-  border: 4px solid transparent;
+  border: 8px solid transparent;
   border-right: 12px solid #deefe8;
 }
+
+/*my user*/
+.item-image-my{
+  position: absolute; left: 95%; top: 50px;
+}
+.item-image-my img {
+  border-radius: 20px;
+  vertical-align: top;
+}
+.item-name-my {
+  font-size: 75%;
+  font-family: 'Carter One', cursive;
+  /*position: relative; left: 600px; top: 0px;*/
+  position: absolute; left: 83%;
+}
+.item-message-my {
+  display: inline-block;
+  padding: 0.8em;
+  background: #deefe8;
+  border-radius: 4px;
+  line-height: 1.2em;
+  font-family: 'Paytone One', sans-serif;
+  position: relative; left: 520px; top: 30px;
+}
+.item-message-my::before {
+  content: ' ';
+  height: 0;
+  position: absolute;
+  width: 0;
+  border: 10px solid transparent;
+  border-left-color: #deefe8;
+  left: 100%;
+  bottom: 12px;
+}
+
 
 /*left section*/
 .item-left {
@@ -275,10 +335,10 @@ p {
 
 .field{
   width: 1000px;
-  height: 530px;
+  height: 400px;
 }
 .button-field{
-  height: 450px;
+  height: 330px;
   width: 100px;
 }
 
@@ -300,8 +360,6 @@ p {
 
 .infobox {
   height: 700px;     /* 高さを制限(※) */
-  /*overflow: scroll;  !* スクロールバーを表示(※) *!*/
-  /*overflow-x: hidden;*/
 }
 
 </style>
