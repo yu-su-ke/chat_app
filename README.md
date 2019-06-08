@@ -2,7 +2,7 @@
 
 > A Vue.js project
 
-![Image from Gyazo](https://gyazo.com/8c1be83d2d8bd44e62241fd401e7371b)
+[![Image from Gyazo](https://i.gyazo.com/8c1be83d2d8bd44e62241fd401e7371b.png)](https://gyazo.com/8c1be83d2d8bd44e62241fd401e7371b)
 
 ## Build Setup
 
