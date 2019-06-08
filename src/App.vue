@@ -19,9 +19,9 @@
     </p>
 
     <!--Left section-->
-<!--    <div class="item-name-left" v-if="currentUser.displayName !== null">-->
-<!--    {{currentUser.displayName}}-->
-<!--    </div>-->
+    <div class="item-name-left" v-if="currentUser !== null">
+      {{currentUser.displayName}}
+    </div>
 
     <!--Right section-->
     <div class="item-name-right">
@@ -154,7 +154,6 @@ h1 {
   font-size: 40px;
   font-family: 'Paytone One', sans-serif;
 }
-
 p {
   font-size: 25px;
   font-family: 'Paytone One', sans-serif;
@@ -174,10 +173,14 @@ p {
   padding: 0.4em 0.8em;
   color: #fff;
 }
+/*message box*/
 .content {
   margin: 0 auto;
   padding: 0 10px;
-  max-width: 600px;
+  max-width: 1000px;
+  height: 700px;
+  overflow: scroll;  /* スクロールバーを表示(※) */
+  overflow-x: hidden;
 }
 .form {
   position: fixed;
@@ -236,7 +239,7 @@ p {
   border-right: 12px solid #deefe8;
 }
 
-
+/*left section*/
 .item-left {
   position: relative;
   display: flex;
@@ -252,17 +255,17 @@ p {
   position: relative; top: -350px;
 }
 .item-name-left {
-  position: relative; top: -700px; left:-800px;
+  position: relative; top: -600px; left:-750px;
   font-size: 40px;
 }
 
-
+/*right seciton*/
 .item-name-right {
-  position: relative; top: -650px; left:550px;
+  position: relative; top: -650px; left:700px;
   font-size: 40px;
 }
 .item-button-right {
-  position: relative; top: -450px; left:550px;
+  position: relative; top: -450px; left:700px;
 }
 .item-image-right img {
   border-radius: 140px;
@@ -272,10 +275,10 @@ p {
 
 .field{
   width: 1000px;
-  height: 400px;
+  height: 530px;
 }
 .button-field{
-  height: 330px;
+  height: 450px;
   width: 100px;
 }
 
@@ -297,8 +300,8 @@ p {
 
 .infobox {
   height: 700px;     /* 高さを制限(※) */
-  overflow: scroll;  /* スクロールバーを表示(※) */
-  overflow-x: hidden;
+  /*overflow: scroll;  !* スクロールバーを表示(※) *!*/
+  /*overflow-x: hidden;*/
 }
 
 </style>
